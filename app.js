@@ -22,7 +22,7 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 const config = require('./config.js');
-const router = require('./router/index');
+const router = require('./router/index.js');
 
 app.use(session({
   secret: "keyboard cat",
