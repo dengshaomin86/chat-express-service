@@ -1,5 +1,6 @@
 // 配置启动服务
 const express = require('express');
+const session = require('express-session');
 const {getIPAddress} = require('./utils/index.js');
 
 const app = express();
@@ -21,15 +22,25 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 const config = require('./config.js');
+const router = require('./router/index');
 
-// router
-const indexRouter = require('./router/index');
-const usersRouter = require('./router/users');
-const databaseRouter = require('./router/database');
+app.use(session({
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: true,
+  cookie: ("name", "value", {
+    maxAge: 60 * 1000,
+    secure: false
+  })
+}));
 
-app.use('/database', databaseRouter);
-app.use('/users', usersRouter);
-app.use('/', indexRouter);
+// req.connection.remoteAddress
+// socket
+// req.session
+
+app.use('/user', router.user);
+app.use('/news', router.news);
+app.use('/', router.default);
 
 app.listen(config.port, function () {
     console.log(`http://localhost:${config.port}`);
