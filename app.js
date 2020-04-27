@@ -4,18 +4,21 @@ const session = require('express-session');
 const {getIPAddress} = require('./utils/index.js');
 
 const app = express();
+const allowOrigin = ["http://localhost:8080", "http://139.9.50.13:8088"];
 
 app.all('*', function(req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
-  // res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Origin", "http://localhost:8080");
-  res.header("Access-Control-Allow-Credentials",'true');
-  //允许的header类型
-  res.header('Access-Control-Allow-Headers', 'Content-type');
-  //跨域允许的请求方式
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS,PATCH");
-  //可选，用来指定本次预检请求的有效期，单位为秒。在此期间，不用发出另一条预检请求。
-  res.header('Access-Control-Max-Age', 1728000);//预请求缓存20天
+  if (allowOrigin.includes(req.headers.origin)) {
+    // res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Credentials",'true');
+    //允许的header类型
+    res.header('Access-Control-Allow-Headers', 'Content-type');
+    //跨域允许的请求方式
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS,PATCH");
+    //可选，用来指定本次预检请求的有效期，单位为秒。在此期间，不用发出另一条预检请求。
+    res.header('Access-Control-Max-Age', 1728000);//预请求缓存20天
+  }
   next();
 });
 
