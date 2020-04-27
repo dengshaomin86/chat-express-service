@@ -7,7 +7,9 @@ const app = express();
 
 app.all('*', function(req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
-  res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.header("Access-Control-Allow-Credentials",'true');
   //允许的header类型
   res.header('Access-Control-Allow-Headers', 'Content-type');
   //跨域允许的请求方式
@@ -29,6 +31,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: ("name", "value", {
+    // domain: "localhost:8080",
     maxAge: 60 * 1000,
     secure: false
   })

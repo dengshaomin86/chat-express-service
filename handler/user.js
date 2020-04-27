@@ -3,6 +3,7 @@ const {db_user} = require("../utils/db.js");
 
 module.exports = {
   signIn(req, res) {
+    console.log("req.session***", req.session);
     getPostBody(req, function (postBody) {
       db_user.findUser(postBody.username).then(data => {
         if (data.password !== postBody.password) {
@@ -12,6 +13,7 @@ module.exports = {
           });
           return;
         }
+        req.session.username = postBody.username;
         res.send({
           message: "登录成功",
           flag: true
