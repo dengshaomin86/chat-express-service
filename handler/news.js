@@ -1,3 +1,4 @@
+const moment = require("moment");
 const {getPostBody} = require("../utils/index.js");
 const {readFile, writeFile} = require("../utils/file.js");
 
@@ -7,7 +8,7 @@ module.exports = {
       req.query.id = (list.length ? Math.max.apply(null, list.map(function (o) {
         return o.id
       })) : 0) + 1;
-      req.query.time = new Date().toUTCString();
+      req.query.time = moment().format("YYYY-MM-DD HH:mm:ss");
       list.push(req.query);
 
       writeFile(JSON.stringify(list), function () {
@@ -23,7 +24,7 @@ module.exports = {
         postBody.id = (list.length ? Math.max.apply(null, list.map(function (o) {
           return o.id
         })) : 0) + 1;
-        postBody.time = new Date().toUTCString();
+        postBody.time = moment().format("YYYY-MM-DD HH:mm:ss");
         list.push(postBody);
 
         writeFile(JSON.stringify(list), function () {
